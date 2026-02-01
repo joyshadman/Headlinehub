@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Headline Hub | Latest News</title>
+  <link rel="shortcut icon" href="img/logo.png" type="image/x-icon">
+  <!-- Bootstrap CSS -->
+  <link href="../css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom CSS (reuse your theme styles) -->
+  <link href="../css/blog.css" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+  <!-- Firebase v10 Modular SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBNh_IwUTgcOFplUZaS6iF7eZ639YKuJxY",
+      authDomain: "news-add-fe372.firebaseapp.com",
+      databaseURL: "https://news-add-fe372-default-rtdb.firebaseio.com",
+      projectId: "news-add-fe372",
+      storageBucket: "news-add-fe372.appspot.com",
+      messagingSenderId: "70995329790",
+      appId: "1:70995329790:web:82f961a42c231470359baf"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+    const newsRef = ref(database, "news");
+
+    const newsContainer = document.getElementById("newsContainer");
+
+    // Load all news
+    onValue(newsRef, (snapshot) => {
+      const newsList = [];
+      snapshot.forEach((child) => {
+        newsList.push(child.val());
+      });
+
+      // Sort by createdAt (latest first)
+      newsList.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+
+      newsContainer.innerHTML = "";
+
+      newsList.forEach((news) => {
+        newsContainer.innerHTML += `
+          <div class="col-lg-4 col-md-6">
+            <div class="news-card h-100 shadow-sm">
+              <img src="${news.imageUrl || 'img/new/default.jpg'}" class="card-img-top" alt="news">
+              <div class="card-body">
+                <span class="badge bg-primary mb-2">${news.category || 'General'}</span>
+                <h3 class="card-title">${news.title}</h3>
+                <p class="card-text">${news.description.substring(0, 160)}...</p>
+                <p class="text-muted small">By ${news.author || 'Admin'}</p>
+                <a href="#" class="btn btn-outline-primary">Read More</a>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+    });
+  </script>
+</head>
+
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">
+        <img src="../img/Logo.gif" alt="logo" width="100" height="120" class="d-inline-block align-text-top">
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link active" href="index.html">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="Blog.html">News</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="Adding.html">Add News</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Banner -->
+  <div class="banner mb-5 text-center">
+    <div class="container">
+      <h1 class="display-4 fw-bold">Latest <span>News</span></h1>
+      <p class="lead"> STAY INFORMED WITH UPDATED NEWS </p>
+    </div>
+  </div>
+
+  <!-- News Section -->
+  <section class="container my-5">
+    <div class="text-center mb-5">
+      <h2>Today's Headlines</h2>
+    </div>
+
+    <!-- Dynamic User News -->
+    <div class="row g-4" id="newsContainer">
+      <!-- User-submitted news will load here -->
+    </div>
+
+    <!-- Static / Manual News -->
+    <div class="row g-4 mt-4" id="staticNews">
+      <div class="col-lg-4 col-md-6">
+        <div class="news-card h-100 shadow-sm">
+          <img src="#" class="card-img-top" alt="Sheikh Mujib">
+          <div class="card-body">
+            <h3 class="card-title">#</h3>
+            <p class="card-text">#</p>
+            <a href="#" class="btn btn-outline-pop">Read More</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <div class="news-card h-100 shadow-sm">
+          <img src="#" class="card-img-top" alt="Fire Incident">
+          <div class="card-body">
+            <h3 class="card-title">#</h3>
+            <p class="card-text">#</p>
+            <a href="#" class="btn btn-outline-pop">Read More</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container ">
+      <div class="row ">
+        <div class="col-lg-4 mb-4 ">
+          <div class="footer-logo mx-auto">
+            <img src="../img/Footerlogo.png" alt="logo" width="140" height="140" class="mx-5">
+          </div>
+          <p>Delivering breaking news and in-depth reporting since 2023. Your trusted source for global headlines.</p>
+          <div class="social-icons mt-4">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+          </div>
+        </div>
+        <div class="col-lg-2 col-md-4 mb-4 mx-auto">
+          <div class="footer-links">
+            <h5>Quick Links</h5>
+            <ul>
+              <li><a href="index.html">Home</a></li>
+              <li><a href="Blog.html">News</a></li>
+              <li><a href="Adding.html">Add News</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-lg-2 col-md-4 mb-4 mx-auto">
+          <div class="footer-links">
+            <h5>Categories</h5>
+            <ul>
+              <li><a href="technology.html">Technology</a></li>
+              <li><a href="business.html">Business</a></li>
+              <li><a href="health.html">Health</a></li>
+              <li><a href="sports.html">Sports</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12 text-center copyright">
+            <p>&copy; 2023 HeadlineHub. All rights reserved.</p>
+          </div>
+        </div>
+      </div>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="js/bootstrap.bundle.js"></script>
+
+</body>
+
+</html>
