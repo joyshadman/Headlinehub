@@ -18,6 +18,12 @@ body {
   overflow-x: hidden;
 }
 
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
 /* =====================
    ANIMATIONS
 ===================== */
@@ -56,126 +62,106 @@ body {
 }
 
 /* =====================
-   NAVBAR
+   NAVBAR BASE (Default: White Text for Dark Banner)
 ===================== */
-.dropdown-menu {
-  background-color: rgba(255, 255, 255, 0.8) !important; /
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 15px !important;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  margin-top: 15px !important; 
-  padding: 10px;
-}
-
-
-.dropdown-item {
-  border-radius: 8px; 
-  padding: 8px 20px;
-  color: #333 !important;
-  font-weight: 500;
-  transition: all 0.2s ease;
-}
-
-.dropdown-item:hover {
-  background-color: var(--primary) !important;
-  color: #fff !important;
-  transform: translateX(5px); 
-}
-.dropdown-toggle::after {
-  display: none !important;
-}
-.navbar-nav {
-  gap: 2rem !important;
-  margin: 0 auto !important;
-}
-
 .navbar {
   width: fit-content;
   min-width: 60%;
-  margin: 20px auto !important;
+  margin: 0 auto;
   padding: 0.5rem 2rem !important;
   border-radius: 50px !important;
+  /* Glass effect for dark backgrounds */
   background-color: rgba(255, 255, 255, 0.1) !important;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.2);
-  position: sticky;
+  position: fixed;
+  /* Fixed works best for pill-style popovers */
   top: 20px;
-  z-index: 1050;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-}
-
-.navbar-brand {
-  font-weight: 800;
-  font-size: 1.8rem;
-  color: #000000 !important;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.navbar-brand span {
-  color: var(--primary);
-}
-
-.nav-link {
-  color: var(--secondary) !important;
-  font-weight: 500;
-  position: relative;
-  transition: all 0.3s ease;
-}
-
-.nav-link:hover {
-  color: var(--primary) !important;
-}
-
-.nav-link::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
   left: 50%;
-  width: 0;
-  height: 2px;
-  background: var(--primary);
-  transition: all 0.3s ease;
+  transform: translateX(-50%);
+  z-index: 1050;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  transition: all 0.4s ease-in-out;
 }
 
-.nav-link:hover::after {
-  width: 100%;
-  left: 0;
+/* Initial White Text */
+.navbar .nav-link,
+.navbar .navbar-brand {
+  color: #ffffff !important;
+  transition: color 0.3s ease;
+  font-weight: 500;
 }
 
-.navbar-collapse {
-  justify-content: flex-start;
+.navbar .nav-link:hover,
+.navbar .navbar-brand:hover {
+  color: #007bff !important;
+  animation: fadeIn 0.3s ease;
 }
 
-/* Make the hamburger button a circle */
+/* Hamburger Icon (White by default) */
+.navbar-toggler-icon {
+  filter: invert(0);
+}
+
+/* =====================
+   SCROLLED STATE (Flip to Black Text for White Sections)
+===================== */
+.navbar.scrolled {
+  background-color: rgba(255, 255, 255, 0.85) !important;
+  /* Brighter glass */
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  top: 10px;
+  /* Optional: nudges it slightly higher when scrolling */
+}
+
+.navbar.scrolled .nav-link,
+.navbar.scrolled .navbar-brand {
+  color: #1a1a1a !important;
+  /* Text turns dark */
+}
+
+/* Flip Hamburger to Black */
+.navbar.scrolled .navbar-toggler-icon {
+  filter: invert(1);
+}
+
+/* =====================
+   DROPDOWN & NAVIGATION
+===================== */
+.dropdown-menu {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(15px);
+  border-radius: 15px !important;
+  border: none;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  margin-top: 10px !important;
+}
+
+.dropdown-item {
+  color: #333 !important;
+  padding: 8px 20px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.dropdown-item:hover {
+  background-color: #007bff !important;
+  color: #fff !important;
+}
+
+.navbar-nav {
+  gap: 1.5rem !important;
+}
+
 .navbar-toggler {
-  border: none !important;
-  background: rgba(0, 0, 0, 0.05);
+  border: none;
   border-radius: 50%;
-  padding: 10px;
-  width: 45px;
-  height: 45px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 8px;
 }
 
-/* Remove focus outline */
-.navbar-toggler:focus {
-  box-shadow: none !important;
-}
-
-/* Adjust the logo size for the pill height */
-.navbar-brand img {
-  transition: transform 0.3s ease;
-}
-
-.navbar-brand:hover img {
-  transform: scale(1.1);
-}
 /* =====================
    BANNER
 ===================== */
@@ -184,7 +170,7 @@ body {
     linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)),
     url('../img/banner.jpg') center/cover no-repeat;
   color: var(--light);
-  padding: 8rem 1rem;
+  padding: 18rem 1rem; 
   animation: fadeIn 1s ease-out;
 }
 

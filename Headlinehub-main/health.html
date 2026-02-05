@@ -44,7 +44,7 @@
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="technology.html">Technology</a></li>
               <li><a class="dropdown-item" href="business.html">Business</a></li>
-              <li><a class="dropdown-item" href="health.html">Health</a></li>
+              <li><a class="dropdown-item" href="health.html" style="background-color: blue; color: white !important;">Health</a></li>
               <li><a class="dropdown-item" href="sports.html">Sports</a></li>
             </ul>
           </li>
@@ -74,7 +74,7 @@
     <div class="row g-4">
       
       <!-- News 1 -->
-      <div class="col-lg-4 col-md-6">
+      <div class="col-lg-4 col-md-6 container">
         <div class="news-card h-100">
           <img src="#" class="card-img-top" alt="AI Technology">
           <div class="card-body">
@@ -189,6 +189,17 @@
         </div>
       </div>
   </footer>
+    <script>
+    window.addEventListener('scroll', function () {
+      const nav = document.querySelector('.navbar');
 
+      if (window.scrollY > 80) {
+        nav.classList.add('scrolled');
+      } else {
+        nav.classList.remove('scrolled');
+      }
+    });
+  </script>
+  <script src="js/bootstrap.bundle.js"></script>
 </body>
 </html>

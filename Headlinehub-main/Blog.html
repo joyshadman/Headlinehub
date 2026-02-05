@@ -42,7 +42,7 @@
               <div class="mt-auto pt-3 d-flex justify-content-between align-items-center">
                 <p class="mb-0 small fw-semibold text-muted">By ${news.author || 'Admin'}</p>
                 
-                <a href="${btnLink}" target="_blank" class="btn btn-sm btn-primary rounded-pill px-3">
+                <a href="${btnLink}" target="_blank" class="btn btn-sm btn btn-pop rounded-pill px-3">
                   ${btnText} <i class="fa-solid fa-arrow-up-right-from-square ms-1" style="font-size: 0.7rem;"></i>
                 </a>
               </div>
@@ -188,6 +188,17 @@
         </div>
       </div>
   </footer>
+    <script>
+    window.addEventListener('scroll', function () {
+      const nav = document.querySelector('.navbar');
+
+      if (window.scrollY > 80) {
+        nav.classList.add('scrolled');
+      } else {
+        nav.classList.remove('scrolled');
+      }
+    });
+  </script>
 
   <!-- Bootstrap JS -->
   <script src="js/bootstrap.bundle.js"></script>
