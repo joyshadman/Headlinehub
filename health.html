@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Headline Hub | Business</title>
+  <title>Headline Hub | Health</title>
   <link rel="shortcut icon" href="img/logo.png" type="image/x-icon">
   <!-- Bootstrap CSS -->
   <link href="../css/bootstrap.min.css" rel="stylesheet">
@@ -16,6 +16,7 @@
 </head>
 
 <body>
+
   <!--Navbar-->
   <nav class="navbar navbar-expand-lg sticky-top">
     <div class="container-fluid">
@@ -44,8 +45,9 @@
             </a>
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="technology.html">Technology</a></li>
-              <li><a class="dropdown-item" href="business.html" style="background-color: blue; color: white !important;">Business</a></li>
-              <li><a class="dropdown-item" href="health.html">Health</a></li>
+              <li><a class="dropdown-item" href="business.html">Business</a></li>
+              <li><a class="dropdown-item" href="health.html"
+                  style="background-color: blue; color: white !important;">Health</a></li>
               <li><a class="dropdown-item" href="sports.html">Sports</a></li>
             </ul>
           </li>
@@ -63,18 +65,19 @@
   <div class="banner mb-5">
     <div class="container text-center">
       <h1 class="display-3 fw-bold mb-4">
-        Business insights,<span> markets </span> , and economy updates.
+        Trusted health <span>information</span> for better living.
       </h1>
-      <a href="../Html/business.html" class="btn btn-pop">
-        Business
+
+      <a href="../Html/health.html" class="btn btn-pop">
+        Health
       </a>
     </div>
   </div>
 
-  <div class="row g-4 container " >
+  <div class="row g-4">
 
     <!-- News 1 -->
-    <div class="col-lg-4 col-md-6">
+    <div class="col-lg-4 col-md-6 container">
       <div class="news-card h-100">
         <img src="#" class="card-img-top" alt="AI Technology">
         <div class="card-body">
@@ -189,17 +192,8 @@
         </div>
       </div>
   </footer>
-    <script>
-    window.addEventListener('scroll', function () {
-      const nav = document.querySelector('.navbar');
+  <script src="./js/news.js"></script>
 
-      if (window.scrollY > 80) {
-        nav.classList.add('scrolled');
-      } else {
-        nav.classList.remove('scrolled');
-      }
-    });
-  </script>
   <script src="js/bootstrap.bundle.js"></script>
 </body>
 
