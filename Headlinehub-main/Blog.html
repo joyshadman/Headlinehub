@@ -6,13 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Headline Hub | Latest News</title>
   <link rel="shortcut icon" href="img/logo.png" type="image/x-icon">
-  <!-- Bootstrap CSS -->
   <link href="../css/bootstrap.min.css" rel="stylesheet">
-
-  <!-- Custom CSS (reuse your theme styles) -->
   <link rel="stylesheet" href="../css/index.css">
-
-  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
   <script type="module">
@@ -37,12 +32,11 @@
             <div class="card-body d-flex flex-column">
               <span class="badge bg-primary mb-2 align-self-start">${news.category || 'General'}</span>
               <h3 class="card-title h5 fw-bold">${news.title}</h3>
-              <p class="card-text text-muted small">${news.description.substring(0, 120)}...</p>
+              <p class="card-text text-muted small">${news.description ? news.description.substring(0, 120) : ''}...</p>
               
               <div class="mt-auto pt-3 d-flex justify-content-between align-items-center">
                 <p class="mb-0 small fw-semibold text-muted">By ${news.author || 'Admin'}</p>
-                
-                <a href="${btnLink}" target="_blank" class="btn btn-sm btn btn-pop rounded-pill px-3">
+                <a href="${btnLink}" target="_blank" class="btn btn-sm btn-pop rounded-pill px-3">
                   ${btnText} <i class="fa-solid fa-arrow-up-right-from-square ms-1" style="font-size: 0.7rem;"></i>
                 </a>
               </div>
@@ -52,36 +46,23 @@
       });
     });
   </script>
-
 </head>
 
 <body>
-  <!--Navbar-->
   <nav class="navbar navbar-expand-lg sticky-top">
     <div class="container-fluid">
-
       <a class="navbar-brand" href="index.html">
         <img src="./img/Footerlogo.png" alt="logo" width="45" height="45" class="d-inline-block align-text-top">
       </a>
-
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
       </button>
-
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav mx-auto">
-          <li class="nav-item">
-            <a class="nav-link active" href="index.html">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="blog.html">News</a>
-          </li>
-
+          <li class="nav-item"><a class="nav-link active" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="blog.html">News</a></li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Categories
-            </a>
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Categories</a>
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="technology.html">Technology</a></li>
               <li><a class="dropdown-item" href="business.html">Business</a></li>
@@ -89,17 +70,12 @@
               <li><a class="dropdown-item" href="sports.html">Sports</a></li>
             </ul>
           </li>
-
-          <li class="nav-item">
-            <a class="nav-link" href="Adding.html">Add News</a>
-          </li>
+          <li class="nav-item"><a class="nav-link" href="Adding.html">Add News</a></li>
         </ul>
       </div>
-
     </div>
   </nav>
 
-  <!-- Banner -->
   <div class="banner mb-5 text-center">
     <div class="container">
       <h1 class="display-4 fw-bold">Latest <span>News</span></h1>
@@ -107,38 +83,16 @@
     </div>
   </div>
 
-  <!-- News Section -->
   <section class="container my-5">
     <div class="text-center mb-5">
       <h2>Today's Headlines</h2>
     </div>
 
-    <!-- Dynamic User News -->
-    <div class="row g-4" id="newsContainer">
-      <!-- User-submitted news will load here -->
-    </div>
+    <div class="row g-4 mb-5" id="newsContainer"></div>
 
-    <!-- Static / Manual News -->
-    <div class="row g-4 mt-4" id="staticNews">
-      <div class="col-lg-4 col-md-6">
-        <div class="news-card h-100 shadow-sm">
-          <img src="#" class="card-img-top" alt="Sheikh Mujib">
-          <div class="card-body">
-            <h3 class="card-title">#</h3>
-            <p class="card-text">#</p>
-            <a href="#" class="btn btn-outline-pop">Read More</a>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-4 col-md-6">
-        <div class="news-card h-100 shadow-sm">
-          <img src="#" class="card-img-top" alt="Fire Incident">
-          <div class="card-body">
-            <h3 class="card-title">#</h3>
-            <p class="card-text">#</p>
-            <a href="#" class="btn btn-outline-pop">Read More</a>
-          </div>
-        </div>
+    <div class="row g-4" id="news-container">
+      <div class="text-center w-100">
+        <p>Fetching latest news...</p>
       </div>
     </div>
   </section>
@@ -173,10 +127,10 @@
           <div class="footer-links">
             <h5>Categories</h5>
             <ul>
-              <li><a href="technology.html">Technology</a></li>
-              <li><a href="business.html">Business</a></li>
-              <li><a href="health.html">Health</a></li>
-              <li><a href="sports.html">Sports</a></li>
+              <li><a href="#" onclick="fetchDynamicNews('technology')">Technology</a></li>
+              <li><a href="#" onclick="fetchDynamicNews('business')">Business</a></li>
+              <li><a href="#" onclick="fetchDynamicNews('health')">Health</a></li>
+              <li><a href="#" onclick="fetchDynamicNews('sports')">Sports</a></li>
             </ul>
           </div>
         </div>
@@ -187,20 +141,9 @@
           </div>
         </div>
       </div>
+    </div>
   </footer>
-    <script>
-    window.addEventListener('scroll', function () {
-      const nav = document.querySelector('.navbar');
-
-      if (window.scrollY > 80) {
-        nav.classList.add('scrolled');
-      } else {
-        nav.classList.remove('scrolled');
-      }
-    });
-  </script>
-
-  <!-- Bootstrap JS -->
+  <script src="js/news.js"></script>
   <script src="js/bootstrap.bundle.js"></script>
 
 </body>
