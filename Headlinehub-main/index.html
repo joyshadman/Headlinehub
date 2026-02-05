@@ -8,117 +8,85 @@
   <link rel="shortcut icon" href="img/logo.png" type="image/x-icon">
   <!-- Bootstrap CSS -->
   <link href="../css/bootstrap.min.css" rel="stylesheet">
-
-  <!-- Custom CSS (reuse your theme styles) -->
-  <link href="../css/blog.css" rel="stylesheet">
-
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="../css/index.css">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
-  <!-- Firebase v10 Modular SDK -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyBNh_IwUTgcOFplUZaS6iF7eZ639YKuJxY",
-      authDomain: "news-add-fe372.firebaseapp.com",
-      databaseURL: "https://news-add-fe372-default-rtdb.firebaseio.com",
-      projectId: "news-add-fe372",
-      storageBucket: "news-add-fe372.appspot.com",
-      messagingSenderId: "70995329790",
-      appId: "1:70995329790:web:82f961a42c231470359baf"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const database = getDatabase(app);
-    const newsRef = ref(database, "news");
-
-    const newsContainer = document.getElementById("newsContainer");
-
-    // Load all news
-    onValue(newsRef, (snapshot) => {
-      const newsList = [];
-      snapshot.forEach((child) => {
-        newsList.push(child.val());
-      });
-
-      // Sort by createdAt (latest first)
-      newsList.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
-
-      newsContainer.innerHTML = "";
-
-      newsList.forEach((news) => {
-        newsContainer.innerHTML += `
-          <div class="col-lg-4 col-md-6">
-            <div class="news-card h-100 shadow-sm">
-              <img src="${news.imageUrl || 'img/new/default.jpg'}" class="card-img-top" alt="news">
-              <div class="card-body">
-                <span class="badge bg-primary mb-2">${news.category || 'General'}</span>
-                <h3 class="card-title">${news.title}</h3>
-                <p class="card-text">${news.description.substring(0, 160)}...</p>
-                <p class="text-muted small">By ${news.author || 'Admin'}</p>
-                <a href="#" class="btn btn-outline-primary">Read More</a>
-              </div>
-            </div>
-          </div>
-        `;
-      });
-    });
-  </script>
 </head>
 
 <body>
+  <!--Navbar-->
+  <nav class="navbar navbar-expand-lg sticky-top">
+    <div class="container-fluid">
 
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
-    <div class="container">
       <a class="navbar-brand" href="index.html">
-        <img src="../img/Logo.gif" alt="logo" width="100" height="120" class="d-inline-block align-text-top">
+        <img src="./img/Footerlogo.png" alt="logo" width="45" height="45" class="d-inline-block align-text-top">
       </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
+
       <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
+        <ul class="navbar-nav mx-auto">
           <li class="nav-item">
             <a class="nav-link active" href="index.html">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="Blog.html">News</a>
+            <a class="nav-link" href="blog.html">News</a>
           </li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Categories
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="technology.html">Technology</a></li>
+              <li><a class="dropdown-item" href="business.html">Business</a></li>
+              <li><a class="dropdown-item" href="health.html">Health</a></li>
+              <li><a class="dropdown-item" href="sports.html">Sports</a></li>
+            </ul>
+          </li>
+
           <li class="nav-item">
             <a class="nav-link" href="Adding.html">Add News</a>
           </li>
         </ul>
       </div>
+
     </div>
   </nav>
 
   <!-- Banner -->
-  <div class="banner mb-5 text-center">
-    <div class="container">
-      <h1 class="display-4 fw-bold">Latest <span>News</span></h1>
-      <p class="lead"> STAY INFORMED WITH UPDATED NEWS </p>
+  <div class="banner mb-5">
+    <div class="container text-center">
+      <h1 class="display-3 fw-bold mb-4">
+        Stay Updated With <span>Breaking</span> News
+      </h1>
+      <p class="lead">
+        Get the latest headlines from around the world. Trusted. Fast. Accurate.
+      </p>
+      <a href="Blog.html" class="btn btn-pop">
+        Explore News <i class="fas fa-arrow-right ms-2"></i>
+      </a>
     </div>
   </div>
 
   <!-- News Section -->
-  <section class="container my-5">
+  <section class="container my-5 py-5">
     <div class="text-center mb-5">
-      <h2>Today's Headlines</h2>
+      <div class="section-title">
+        <h2>Latest Headlines</h2>
+      </div>
     </div>
 
-    <!-- Dynamic User News -->
-    <div class="row g-4" id="newsContainer">
-      <!-- User-submitted news will load here -->
-    </div>
-
-    <!-- Static / Manual News -->
-    <div class="row g-4 mt-4" id="staticNews">
+    <div class="row g-4">
+      <!-- News Article 1 -->
       <div class="col-lg-4 col-md-6">
-        <div class="news-card h-100 shadow-sm">
-          <img src="#" class="card-img-top" alt="Sheikh Mujib">
+        <div class="news-card h-100">
+          <img src="#" class="card-img-top" alt="AI Technology">
           <div class="card-body">
             <h3 class="card-title">#</h3>
             <p class="card-text">#</p>
@@ -126,9 +94,23 @@
           </div>
         </div>
       </div>
+
+      <!-- News Article 2 -->
       <div class="col-lg-4 col-md-6">
-        <div class="news-card h-100 shadow-sm">
-          <img src="#" class="card-img-top" alt="Fire Incident">
+        <div class="news-card h-100">
+          <img src="#" class="card-img-top" alt="Climate Change">
+          <div class="card-body">
+            <h3 class="card-title">#</h3>
+            <p class="card-text">#</p>
+            <a href="#" class="btn btn-outline-pop">Read More</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- News Article 3 -->
+      <div class="col-lg-4 col-md-6">
+        <div class="news-card h-100">
+          <img src="#" class="card-img-top" alt="Healthy Diet">
           <div class="card-body">
             <h3 class="card-title">#</h3>
             <p class="card-text">#</p>
@@ -139,6 +121,7 @@
     </div>
   </section>
 
+  <!-- Footer -->
   <footer>
     <div class="container ">
       <div class="row ">
@@ -187,7 +170,5 @@
 
   <!-- Bootstrap JS -->
   <script src="js/bootstrap.bundle.js"></script>
-
-</body>
 
 </html>

@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add News | Headline Hub</title>
+
+  <link rel="shortcut icon" href="../img/Logo.gif" type="image/x-icon">
+
+  <!-- Bootstrap CSS -->
+  <link href="../css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom CSS (reuse your theme styles) -->
+  <link rel="stylesheet" href="../css/index.css">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+  <!-- Firebase -->
+  <script type="module">
+    import { database, ref, push } from "./js/firebase-config.js";
+
+    window.addNews = async function () {
+      const title = document.getElementById("title").value.trim();
+      const description = document.getElementById("description").value.trim();
+      const category = document.getElementById("category").value;
+      const author = document.getElementById("author").value.trim();
+      const imageUrl = document.getElementById("imageUrl").value.trim();
+
+      // New Fields
+      const buttonText = document.getElementById("buttonText").value.trim();
+      const buttonUrl = document.getElementById("buttonUrl").value.trim();
+
+      if (!title || !description || !author) {
+        showAlert("Please fill all required fields", "danger");
+        return;
+      }
+
+      try {
+        await push(ref(database, "news"), {
+          title,
+          description,
+          category,
+          author,
+          imageUrl,
+          buttonText: buttonText || "Read More", // Default text if empty
+          buttonUrl: buttonUrl || "#",           // Default link if empty
+          createdAt: Date.now()
+        });
+
+        document.getElementById("newsForm").reset();
+        showAlert("News added successfully!", "success");
+      } catch (error) {
+        showAlert(error.message, "danger");
+      }
+    };
+    function showAlert(message, type) {
+      document.getElementById("alertBox").innerHTML = `
+      <div class="alert alert-${type} alert-dismissible fade show">
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>`;
+    }
+  </script>
+</head>
+
+<body>
+
+  <!--Navbar-->
+  <nav class="navbar navbar-expand-lg sticky-top">
+    <div class="container-fluid">
+
+      <a class="navbar-brand" href="index.html">
+        <img src="./img/Footerlogo.png" alt="logo" width="45" height="45" class="d-inline-block align-text-top">
+      </a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mx-auto">
+          <li class="nav-item">
+            <a class="nav-link active" href="index.html">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="blog.html">News</a>
+          </li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Categories
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="technology.html">Technology</a></li>
+              <li><a class="dropdown-item" href="business.html">Business</a></li>
+              <li><a class="dropdown-item" href="health.html">Health</a></li>
+              <li><a class="dropdown-item" href="sports.html">Sports</a></li>
+            </ul>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="Adding.html">Add News</a>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+  </nav>
+
+  <!-- Banner -->
+  <div class="banner mb-5">
+    <div class="container text-center">
+      <h1 class="display-3 fw-bold mb-4">
+        publish, what <span> happening </span> in your around
+      </h1>
+      <p class="lead">
+        “Submit your news — our team will review before publishing.”
+      </p>
+      <a href="Blog.html" class="btn btn-pop">
+        Back to News <i class="fas fa-arrow-right ms-2"></i>
+      </a>
+    </div>
+  </div>
+
+  <!-- Add News Form -->
+  <div class="container my-5">
+    <div class="row justify-content-center">
+      <div class="col-md-8 col-lg-6">
+
+        <div class="card border-0 shadow-lg rounded-4">
+          <div class="card-body p-4 p-md-5">
+
+            <div class="text-center mb-4">
+              <i class="fa-solid fa-pen-nib fa-2x text-primary mb-2"></i>
+              <h2 class="fw-bold">Publish News</h2>
+              <p class="text-muted">Share verified news with Headline Hub</p>
+            </div>
+
+            <div id="alertBox"></div>
+
+            <form id="newsForm" onsubmit="event.preventDefault(); addNews();">
+
+              <!-- Title -->
+              <div class="form-floating mb-3">
+                <input type="text" id="title" class="form-control" placeholder="Title" required>
+                <label for="title"><i class="fa-solid fa-heading me-2"></i>News Title</label>
+              </div>
+
+              <!-- Description -->
+              <div class="form-floating mb-3">
+                <textarea id="description" class="form-control" placeholder="Description" style="height: 140px"
+                  required></textarea>
+                <label for="description"><i class="fa-solid fa-align-left me-2"></i>Description</label>
+              </div>
+
+              <!-- Category -->
+              <div class="mb-3">
+                <label class="form-label fw-semibold">
+                  <i class="fa-solid fa-layer-group me-2"></i>Category
+                </label>
+                <select id="category" class="form-select rounded-3">
+                  <option>General</option>
+                  <option>Technology</option>
+                  <option>Business</option>
+                  <option>Politics</option>
+                  <option>Sports</option>
+
+                </select>
+              </div>
+
+              <!-- Author -->
+              <div class="form-floating mb-3">
+                <input type="text" id="author" class="form-control" placeholder="Author" required>
+                <label for="author"><i class="fa-solid fa-user me-2"></i>Author Name</label>
+              </div>
+
+              <!-- Image -->
+              <div class="form-floating mb-4">
+                <input type="text" id="imageUrl" class="form-control" placeholder="Image URL">
+                <label for="imageUrl"><i class="fa-solid fa-image me-2"></i>Image URL (optional)</label>
+              </div>
+              <div class="row mb-4">
+                <div class="col-md-6">
+                  <div class="form-floating mb-3 mb-md-0">
+                    <input type="text" id="buttonText" class="form-control" placeholder="Button Text">
+                    <label for="buttonText"><i class="fa-solid fa-tag me-2"></i>Button Text (e.g. Read Source)</label>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-floating">
+                    <input type="url" id="buttonUrl" class="form-control" placeholder="Link URL">
+                    <label for="buttonUrl"><i class="fa-solid fa-link me-2"></i>Link URL</label>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Submit -->
+              <div class="d-grid">
+                <button type="submit" class="btn btn-primary-custom btn-lg rounded-pill">
+                  <i class="fa-solid fa-paper-plane me-2"></i>Publish News
+                </button>
+              </div>
+
+            </form>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container ">
+      <div class="row ">
+        <div class="col-lg-4 mb-4 ">
+          <div class="footer-logo mx-auto">
+            <img src="../img/Footerlogo.png" alt="logo" width="140" height="140" class="mx-5">
+          </div>
+          <p>Delivering breaking news and in-depth reporting since 2023. Your trusted source for global headlines.</p>
+          <div class="social-icons mt-4">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+          </div>
+        </div>
+        <div class="col-lg-2 col-md-4 mb-4 mx-auto">
+          <div class="footer-links">
+            <h5>Quick Links</h5>
+            <ul>
+              <li><a href="index.html">Home</a></li>
+              <li><a href="Blog.html">News</a></li>
+              <li><a href="Adding.html">Add News</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-lg-2 col-md-4 mb-4 mx-auto">
+          <div class="footer-links">
+            <h5>Categories</h5>
+            <ul>
+              <li><a href="technology.html">Technology</a></li>
+              <li><a href="business.html">Business</a></li>
+              <li><a href="health.html">Health</a></li>
+              <li><a href="sports.html">Sports</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12 text-center copyright">
+            <p>&copy; 2023 HeadlineHub. All rights reserved.</p>
+          </div>
+        </div>
+      </div>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="js/bootstrap.bundle.js"></script>
+
+</body>
+
+</html>
