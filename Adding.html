@@ -27,8 +27,6 @@
       const category = document.getElementById("category").value;
       const author = document.getElementById("author").value.trim();
       const imageUrl = document.getElementById("imageUrl").value.trim();
-
-      // New Fields
       const buttonText = document.getElementById("buttonText").value.trim();
       const buttonUrl = document.getElementById("buttonUrl").value.trim();
 
@@ -44,8 +42,8 @@
           category,
           author,
           imageUrl,
-          buttonText: buttonText || "Read More", // Default text if empty
-          buttonUrl: buttonUrl || "#",           // Default link if empty
+          buttonText: buttonText || "Read More", 
+          buttonUrl: buttonUrl || "#",          
           createdAt: Date.now()
         });
 

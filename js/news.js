@@ -1,77 +1,68 @@
 const API_KEY = "pub_d519a9e3bca24c0ab519a31b8467c8a8";
+const FALLBACK_IMG = "img/placeholder.jpg"; 
 
-async function fetchDynamicNews(category = 'top') {
-    const container = document.getElementById('news-container');
-    const heading = document.getElementById('section-heading');
-
+async function fetchDynamicNews(cat = 'top') {
+    const el = id => document.getElementById(id);
+    const container = el('news-container'), heading = el('section-heading');
+    
     if (heading) {
-        heading.innerText = category === 'top' ? "Top Breaking News" : category.toUpperCase() + " Highlights";
+        heading.innerHTML = cat === 'top' ? "TOP <span>BREAKING</span> NEWS" : `LATEST IN <span>${cat.toUpperCase()}</span>`;
     }
 
     try {
-        const response = await fetch(`https://newsdata.io/api/1/latest?apikey=${API_KEY}&language=en&category=${category}`);
-
-        // Check if the response is okay (status 200)
-        if (!response.ok) {
-            throw new Error('API Limit reached or network error');
+        const res = await fetch(`https://newsdata.io/api/1/latest?apikey=${API_KEY}&language=en&category=${cat}`);
+        if (!res.ok) throw 0;
+        const data = await res.json();
+        
+        if (data.results?.length) {
+            localStorage.setItem(`news_${cat}`, JSON.stringify(data.results));
+            return renderNews(data.results, container);
         }
-
-        const data = await response.json();
-
-        // If we have results, save them for later and render
-        if (data.results && data.results.length > 0) {
-            localStorage.setItem(`cached_news_${category}`, JSON.stringify(data.results));
-            renderNews(data.results, container);
-        } else {
-            throw new Error('Empty results');
-        }
-
-    } catch (error) {
-        console.warn("Using looped/cached news due to error:", error);
-
-        // Fallback: Try to get news from localStorage
-        const cachedData = localStorage.getItem(`cached_news_${category}`);
-
-        if (cachedData) {
-            const oldNews = JSON.parse(cachedData);
-            renderNews(oldNews, container);
-        } else {
-            container.innerHTML = '<p class="text-center">No cached news available. Please check back later.</p>';
-        }
+        throw 0;
+    } catch (e) {
+        const cached = JSON.parse(localStorage.getItem(`news_${cat}`) || "[]");
+        cached.length ? renderNews(cached, container) : 
+        container.innerHTML = `<div class="text-center">
+            <p class="mt-5">Offline: No cached ${cat} news found.</p>
+            <button class="btn btn-primary" onclick="location.reload()">Retry</button>
+        </div>`;
     }
 }
 
-// Separate function to handle the HTML creation
 function renderNews(articles, container) {
-    container.innerHTML = ""; // Clear existing content
-
-    articles.slice(0, 6).forEach(article => {
-        const newsCard = `
-            <div class="col-lg-4 col-md-6">
-                <div class="news-card h-100">
-                    <img src="${article.image_url || 'https://via.placeholder.com/400x250?text=Headline+Hub'}" 
-                         class="card-img-top" alt="news" style="height:200px; object-fit:cover;">
-                    <div class="card-body d-flex flex-column">
-                        <h3 class="card-title fw-bold" style="font-size: 1.2rem;">${article.title}</h3>
-                        <div class="mt-auto">
-                            <a href="${article.link}" target="_blank" class="btn btn-outline-pop w-100">Full Story</a>
-                        </div>
+    if (!container) return;
+    container.innerHTML = articles.slice(0, 9).map(a => `
+        <div class="col-lg-4 col-md-6">
+            <div class="news-card h-100 shadow-sm border-0">
+                <img src="${a.image_url || FALLBACK_IMG}" 
+                     onerror="this.src='${FALLBACK_IMG}'"
+                     class="card-img-top" style="height:220px; object-fit:cover;" alt="news">
+                <div class="card-body d-flex flex-column">
+                    <h3 class="card-title fw-bold" style="font-size: 1.15rem; color: #222;">${a.title}</h3>
+                    <p class="card-text text-muted small">${a.description ? a.description.substring(0, 100) + '...' : 'Click below to read the full story.'}</p>
+                    <div class="mt-auto pt-3">
+                        <a href="${a.link}" target="_blank" class="btn btn-outline-dark w-100 fw-bold">Read More</a>
                     </div>
                 </div>
             </div>
-        `;
-        container.innerHTML += newsCard;
-    });
+        </div>`).join('');
 }
 
-// Initialize on page load
 document.addEventListener('DOMContentLoaded', () => {
-    fetchDynamicNews('top');
+    const path = window.location.pathname;
+    const page = path.split("/").pop();
 
-    window.addEventListener('scroll', function () {
-        const nav = document.querySelector('.navbar');
-        if (nav) {
-            window.scrollY > 80 ? nav.classList.add('scrolled') : nav.classList.remove('scrolled');
-        }
-    });
+    let activeCat = 'top';
+    if (page.includes('technology')) activeCat = 'technology';
+    else if (page.includes('sports')) activeCat = 'sports';
+    else if (page.includes('health')) activeCat = 'health';
+    else if (page.includes('business')) activeCat = 'business';
+
+    fetchDynamicNews(activeCat);
+    setInterval(() => {
+        fetchDynamicNews(activeCat);
+    }, 300000);
+
+    const nav = document.querySelector('.navbar');
+    window.onscroll = () => nav?.classList.toggle('scrolled', window.scrollY > 50);
 });
